@@ -1,0 +1,22 @@
+name: 'Hello, World!'
+description: 'A simple action to greet the world.'
+inputs:
+  name:
+    description: 'Name to greet'
+    required: false
+    default: 'World'
+outputs:
+  greeting:
+    description: 'The greeting message'
+    value: ${{ steps.greet.outputs.greeting }}
+  
+runs:
+    using: 'composite'
+    steps:
+      - name: Greet
+        id: greet
+        run: |
+          echo "PWD: ${{PWD}}"
+          ./hello.sh "${{ inputs.name }}"
+          echo "greeting="./hello.sh ${{ inputs.name }}" >> $GITHUB_OUTPUT
+        shell: bash

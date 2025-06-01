@@ -1,0 +1,65 @@
+# CPUやランナーを確認するだけでなにもしません!
+name: CPU, Runner Check
+on: 
+  - push
+  - workflow_dispatch
+
+jobs:
+    check-act:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Check CPU and Runner
+            id: check-act
+            run: |
+                R="false"
+                if [[ "$ACT" == "true" ]]; then
+                    echo "Running in ACT mode"
+                    R="true"
+                fi
+                echo "IS_ACT=$R" >> "${GITHUB_OUTPUT}"
+        outputs:
+            IS_ACT: ${{ steps.check-act.outputs.IS_ACT }}
+
+    disp-result:
+        needs: check-act
+        runs-on: ubuntu-latest
+        steps:
+            - name: disp-result
+              run: |
+                echo ${{needs.check-act.outputs.IS_ACT}}
+                exit 0
+
+    view-runner:
+        needs: check-act
+        strategy:
+            matrix:
+                cpu:
+                    #- amd64
+                    - arm64
+                runner:
+                    #- ubuntu-24.04
+                    - ubuntu-24.04-arm
+
+                context:
+                    - Dockerfile
+                    #- Dockerfile.alpine
+                act:
+                    - ${{ needs.check-act.outputs.IS_ACT }}
+                exclude:
+                    - cpu: arm64
+                      runner: ubuntu-24.04
+                    - cpu: amd64
+                      runner: ubuntu-24.04-arm
+        runs-on: ${{ matrix.act && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
+        steps:
+          - name: hello
+            uses: ./.github/actions/hw
+            with:
+              name: "hoge"
+          - name: info
+            run: |
+                echo "CPU: ${{ matrix.cpu }}" 
+                echo "Runner: ${{ matrix.runner }}"
+                echo "Context: ${{ matrix.context }}"
+                echo "ACT: ${{ matrix.act }}"
+                uname -a
