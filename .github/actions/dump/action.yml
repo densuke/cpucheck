@@ -1,0 +1,34 @@
+# GitHub CI/CD本 p.125
+name: Dump
+description: |
+  環境変数とgithubのコンテキストをログに出力します。
+  ワークフローのデバッグに使いましょう。
+
+inputs:
+  enable-context:
+    description: コンテキストのログを出力するか
+    default: "true"
+    required: false
+
+outputs:
+  dumped-date:
+    description: ダンプ日時
+    value: ${{ steps.current.outputs.date }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: 環境変数の出力
+      run: printenv | sort
+      shell: bash
+    - name: コンテキストの出力
+      if: ${{ inputs.enable-context == 'true' }}
+      env:
+        CONTEXT: ${{ toJson(github) }}
+      run: echo "$CONTEXT" | jq . | sed -e 's;^;>>> ;'
+      shell: bash
+    - name: 現在の日時出力
+      id: current
+      shell: bash
+      run: |
+        echo "date=$(date)" >> $GITHUB_OUTPUT"
