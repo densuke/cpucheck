@@ -31,4 +31,4 @@ runs:
       id: current
       shell: bash
       run: |
-        echo "date=$(date)" >> $GITHUB_OUTPUT"
+        echo "date=$(date)" >> $GITHUB_OUTPUT
