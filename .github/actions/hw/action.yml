@@ -11,12 +11,12 @@ outputs:
     value: ${{ steps.greet.outputs.greeting }}
   
 runs:
-    using: 'composite'
-    steps:
-      - name: Greet
-        id: greet
-        run: |
-          echo "PWD: ${{PWD}}"
-          ./hello.sh "${{ inputs.name }}"
-          echo "greeting="./hello.sh ${{ inputs.name }}" >> $GITHUB_OUTPUT
-        shell: bash
+  using: composite
+  steps:
+    - name: Greet
+      id: greet
+      run: |
+        echo "PWD: ${{PWD}}"
+        ./hello.sh "${{ inputs.name }}"
+        echo "greeting="./hello.sh ${{ inputs.name }}" >> $GITHUB_OUTPUT
+      shell: bash

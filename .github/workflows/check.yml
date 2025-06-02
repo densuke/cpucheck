@@ -5,15 +5,15 @@ on:
   - workflow_dispatch
 
 jobs:
-    dump-action:
-        runs-on: ubuntu-latest
-        steps:
-          - name: checkout
-            uses: actions/checkout@v4
-          - id: dump
-            uses: ./.github/actions/dump/
-            with:
-              enable-context: "true"
+    # dump-action:
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #       - name: checkout
+    #         uses: actions/checkout@v4
+    #       - id: dump
+    #         uses: ./.github/actions/dump/
+    #         with:
+    #           enable-context: "true"
     check-act:
         runs-on: ubuntu-latest
         steps:
@@ -44,14 +44,14 @@ jobs:
             matrix:
                 cpu:
                     - amd64
-                    - arm64
+                    # - arm64
                 runner:
                     - ubuntu-24.04
-                    - ubuntu-24.04-arm
+                    # - ubuntu-24.04-arm
 
                 context:
                     - Dockerfile
-                    - Dockerfile.alpine
+                    # - Dockerfile.alpine
                 act:
                     - ${{ needs.check-act.outputs.IS_ACT }}
                 exclude:
@@ -61,8 +61,10 @@ jobs:
                       runner: ubuntu-24.04-arm
         runs-on: ${{ matrix.act && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
         steps:
+          - name: checkout
+            uses: actions/checkout@v4
           - name: hello
-            uses: ./.github/actions/hw
+            uses: ./.github/actions/hw/
             with:
               name: "hoge"
         #   - name: info
