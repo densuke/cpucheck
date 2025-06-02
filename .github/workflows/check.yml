@@ -67,10 +67,10 @@ jobs:
             uses: ./.github/actions/hw/
             with:
               name: "hoge"
-        #   - name: info
-        #     run: |
-        #         echo "CPU: ${{ matrix.cpu }}" 
-        #         echo "Runner: ${{ matrix.runner }}"
-        #         echo "Context: ${{ matrix.context }}"
-        #         echo "ACT: ${{ matrix.act }}"
-        #         uname -a
+          - name: info
+            run: |
+                echo "CPU: ${{ matrix.cpu }}" 
+                echo "Runner: ${{ matrix.runner }}"
+                echo "Context: ${{ matrix.context }}"
+                echo "ACT: ${{ matrix.act }}"
+                uname -a
