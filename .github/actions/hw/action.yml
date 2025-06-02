@@ -16,7 +16,7 @@ runs:
     - name: Greet
       id: greet
       run: |
-        echo "PWD: ${{PWD}}"
-        ./hello.sh "${{ inputs.name }}"
-        echo "greeting="./hello.sh ${{ inputs.name }}" >> $GITHUB_OUTPUT
+        echo "PWD: $(pwd)"
+        ./.github/actions/hw/hello.sh "${{ inputs.name }}"
+        echo "greeting=./hello.sh ${{ inputs.name }}" >> $GITHUB_OUTPUT
       shell: bash
